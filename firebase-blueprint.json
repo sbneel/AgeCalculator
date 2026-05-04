@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "HistoryItem": {
+      "title": "History Item",
+      "description": "A record of a previous age calculation",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "dob": { "type": "string", "format": "date-time" },
+        "ageYears": { "type": "number" },
+        "ageMonths": { "type": "number" },
+        "ageDays": { "type": "number" },
+        "zodiac": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "dob", "createdAt"]
+    },
+    "Birthday": {
+      "title": "Birthday",
+      "description": "A saved birthday for tracking",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "dob": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "dob", "createdAt"]
+    },
+    "Video": {
+      "title": "Video",
+      "description": "YouTube video link with meta description",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "url": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "url", "createdAt"]
+    },
+    "Withdrawal": {
+      "title": "Withdrawal",
+      "description": "User withdrawal request via bKash",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "amount": { "type": "number" },
+        "bkashNumber": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "bkashNumber", "status", "createdAt"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Global app settings including theme colors",
+      "type": "object",
+      "properties": {
+        "primaryColor": { "type": "string" },
+        "surfaceColor": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Extended user data including points",
+      "type": "object",
+      "properties": {
+        "points": { "type": "number" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "history": {
+      "schema": "HistoryItem",
+      "description": "Collection of age calculation history"
+    },
+    "birthdays": {
+      "schema": "Birthday",
+      "description": "Collection of tracked birthdays"
+    },
+    "videos": {
+      "schema": "Video",
+      "description": "YouTube videos for the app"
+    },
+    "withdrawals": {
+      "schema": "Withdrawal",
+      "description": "Withdrawal requests from users"
+    },
+    "settings": {
+      "schema": "AppSettings",
+      "description": "Global app settings"
+    },
+    "users": {
+      "schema": "UserProfile",
+      "description": "Extended user profiles/points"
+    }
+  }
+}

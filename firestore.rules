@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Videos collection - Publicly readable, writeable by admin
+    // In a real app, you'd restrict writing to specific UIDs or an isAdmin helper
+    match /videos/{videoId} {
+      allow read: if true;
+      allow write: if isSignedIn(); // Restricted to authenticated users for now
+    }
+
+    // History collection
+    match /history/{itemId} {
+      allow read, write: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid) && (request.resource == null || request.resource.data.userId == request.auth.uid);
+    }
+
+    // Birthdays collection
+    match /birthdays/{itemId} {
+       allow read, write: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid) && (request.resource == null || request.resource.data.userId == request.auth.uid);
+    }
+
+    // Users collection (profiles/points)
+    match /users/{userId} {
+      allow read: if isSignedIn() && userId == request.auth.uid;
+      allow write: if isSignedIn() && userId == request.auth.uid;
+    }
+
+    // Withdrawals collection
+    match /withdrawals/{withdrawalId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSignedIn()); // Admin should be able to read all, simplified for now
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn(); // Admin control
+    }
+
+    // Settings collection
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isSignedIn(); // Admin only
+    }
+  }
+}

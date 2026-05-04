@@ -1,0 +1,6 @@
+{
+  "name": "Age Calculator SB",
+  "description": "A modern Telegram Mini App built with Material Design 3 for calculating age, tracking birthdays, and exploring zodiac signs with real-time history and Bangla support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
